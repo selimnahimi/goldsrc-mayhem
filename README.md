@@ -10,6 +10,7 @@ https://steamcommunity.com/workshop/filedetails/?id=2117732405
 - Quake Announcer
 - Custom footstep system for playing GoldSrc footstep sounds
 - Utilities like Longjump Module
+- Spawn protection
 
 # Gameplay:
 - 2 teams fight in TDM: Counter-Strike and Half-Life 1
