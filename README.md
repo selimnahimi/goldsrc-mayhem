@@ -1,4 +1,5 @@
 # goldsrc-mayhem
+![GoldSrc Mayhem Logo](https://cdn.discordapp.com/attachments/469453201700028416/719194178373812294/logo.png)
 A Garry's Mod gamemode which tries to simulate the old GoldSource multiplayer experience with a twist.
 
 Garry's Mod Workshop collection link (the addon is currently privated):
