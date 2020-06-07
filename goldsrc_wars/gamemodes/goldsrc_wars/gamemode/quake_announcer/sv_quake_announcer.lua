@@ -104,7 +104,8 @@ hook.Add("PlayerDeath", "Quake_PlayerDeath", function(victim, weapon, killer)
 end)
 
 function Quake_KillStreakBroadcast(ply, msgID)
-    PrintMessage(HUD_PRINTTALK, ply:GetName() .. " is " .. QUAKE_SOUNDS[msgID][2] .. "!")
+    local prefix = QUAKE_SOUNDS[msgID][3] or ""
+    PrintMessage(HUD_PRINTTALK, ply:GetName() .. " is " .. prefix .. QUAKE_SOUNDS[msgID][2] .. "!")
 end
 
 function Quake_Broadcast(soundIndex)
