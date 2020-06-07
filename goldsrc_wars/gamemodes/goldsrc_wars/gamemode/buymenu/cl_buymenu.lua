@@ -300,6 +300,12 @@ function BuildBuyMenu( label, description, button_list )
     function BuyMenu:Paint()
         draw.RoundedBox( 8, 0, 0, self:GetWide(), self:GetTall(), Color( 0,0,0,200 ) )
     end
+    function BuyMenu:OnKeyCodePressed(keycode)
+        if keycode == KEY_B or keycode == KEY_ESCAPE then
+            BuyMenu:Close()
+            BuyMenu = nil
+        end
+    end
 
     local label_category = vgui.Create( "DLabel", BuyMenu )    
     label_category:SetPos(button_x, button_y_start + current_spacing )

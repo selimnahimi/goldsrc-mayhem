@@ -280,11 +280,12 @@ function GiveAmmo(ply, classname, count)
         giveAmmoFor = {classname}
     else
         -- Otherwise give ammo for every weapon in loadout
-        giveAmmoFor = playerLoadout[ply] or {}
+        local loadout = playerLoadout[ply] or {}
+        giveAmmoFor = table.Copy(loadout)
 
         -- Add special weapons which allow ammo purchase
         for specWepClass, _ in pairs(specialTable) do
-            if ply:GetWeapon(specWepClass) != nil and specialTable[specWepClass][2] then
+            if ply:GetWeapon(specWepClass):IsValid() and specialTable[specWepClass][2] then
                 table.insert(giveAmmoFor, specWepClass)
             end
         end
@@ -292,6 +293,7 @@ function GiveAmmo(ply, classname, count)
 
     -- cycle through loadout
     for _, wepClass in pairs(giveAmmoFor) do
+        --print(wepClass)
         local wep = ply:GetWeapon(wepClass)
         if wep == nil then continue end
         
