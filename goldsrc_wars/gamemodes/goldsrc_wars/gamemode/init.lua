@@ -87,6 +87,7 @@ function GM:PlayerLoadout(ply)
         ply:Give("weapon_hl1_crowbar")
     elseif ply:Team() == TEAM_CS then
         ply:Give("weapon_cs16_knife_fix")
+        ply:Give("weapon_cs16_hegrenade_fix")
     end
 
     if playerLoadout[ply] != nil then
@@ -199,7 +200,7 @@ end
 
 -- Spawn protection and team damage
 function GM:PlayerShouldTakeDamage(victim, inflictor)
-    local spawnProtected = playerSpawnProtected[ply] or 0
+    local spawnProtected = playerSpawnProtected[victim] or 0
     if spawnProtected > 0 then
         return false
     end
