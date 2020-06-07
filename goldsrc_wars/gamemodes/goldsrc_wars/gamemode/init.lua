@@ -111,6 +111,8 @@ function GM:PlayerLoadout(ply)
     end
 
     ply:EmitSound("items/gunpickup2.wav")
+
+    ply:SetNoCollideWithTeammates(true)
 end
 
 -- Used to store a player's credits
@@ -185,20 +187,23 @@ hook.Add("PlayerDeath", "Playerdeath", function(victim, weapon, killer)
     
 end)
 
+-- Scale damage
 function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
+    dmginfo:ScaleDamage(2)
+
+    if hitgroup == HITGROUP_HEAD then
+        ply:EmitSound(headshotSounds[math.random(#headshotSounds)])
+        dmginfo:ScaleDamage(3)
+    end
+end
+
+-- Spawn protection
+function GM:PlayerShouldTakeDamage(victim, inflictor)
     local spawnProtected = playerSpawnProtected[ply] or 0
     if spawnProtected > 0 then
         dmginfo:ScaleDamage(0)
         return true
     end
-
-    dmginfo:ScaleDamage(2)
-    if hitgroup == HITGROUP_HEAD then
-        ply:EmitSound(headshotSounds[math.random(#headshotSounds)])
-        dmginfo:ScaleDamage(3)
-    end
-
-    --pl.lastHitGroup = hitgroup
 end
 
 function ReplaceEntities()
