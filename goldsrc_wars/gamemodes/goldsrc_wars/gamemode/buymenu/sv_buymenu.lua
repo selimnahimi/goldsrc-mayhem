@@ -89,6 +89,7 @@ local CSspecialAmmo = {
 -- Networking
 util.AddNetworkString( "buyPlayerWeapon" )
 util.AddNetworkString( "successWeaponPurchase" )
+util.AddNetworkString( "successSpecWeaponPurchase" )
 util.AddNetworkString( "failedPurchase" )
 
 util.AddNetworkString( "buyPlayerAmmo" )
@@ -185,6 +186,7 @@ net.Receive( "buyPlayerWeapon", function( len, ply )
 
             -- Let the client now that the purchase was successful
             net.Start("successWeaponPurchase")
+            net.WriteString(classname)
             net.Send(ply)
         else
             FailedPurchase(ply, "You already have this weapon.")
@@ -202,6 +204,10 @@ net.Receive( "buyPlayerWeapon", function( len, ply )
                 local weapon = ents.Create(classname)
                 weapon:SetPos(ply:GetPos())
                 weapon:Spawn()
+
+                net.Start("successSpecWeaponPurchase")
+                net.WriteString(classname)
+                net.Send(ply)
             end
             ChangeCredit(ply, -required)
         else
@@ -268,15 +274,28 @@ function GiveAmmo(ply, classname, count)
     if team == TEAM_CS then specialTable = CSspecialWeapons
     elseif team == TEAM_HL then specialTable = HLspecialWeapons end
 
+    local giveAmmoFor = {}
+    if classname != nil then
+        -- We have a given classname, only give ammo for that specific weapon.
+        giveAmmoFor = {classname}
+    else
+        -- Otherwise give ammo for every weapon in loadout
+        giveAmmoFor = playerLoadout[ply] or {}
+
+        -- Add special weapons which allow ammo purchase
+        for specWepClass, _ in pairs(specialTable) do
+            if ply:GetWeapon(specWepClass) != nil and specialTable[specWepClass][2] then
+                table.insert(giveAmmoFor, specWepClass)
+            end
+        end
+    end
+
     -- cycle through loadout
-    for _, wepClass in pairs(playerLoadout[ply]) do
-        local wep = FindPlayerWep(wepClass)
-        if wep == false then continue end
+    for _, wepClass in pairs(giveAmmoFor) do
+        local wep = ply:GetWeapon(wepClass)
+        if wep == nil then continue end
         
         local ammoType = wep.Primary.Ammo -- GetPrimaryAmmoType() returns an int for some reason????
-
-        -- If we want only a SPECIFIC classname to get ammo, then skip the rest
-        if classname != nil and wepClass != classname then continue end
 
         -- Skip if we already gave ammo for this ammo type
         if gaveAlready[ammoType] then continue end
@@ -287,10 +306,7 @@ function GiveAmmo(ply, classname, count)
         print("Buying for: " .. wepClass)
         print("Ammotype: " .. ammoType)
 
-        if specialTable[wepClass] != nil and !specialTable[wepClass][2] then
-            -- This weapon is special and it's ammo is not marked as purchasable
-            continue
-        elseif ammoAmount[ammoType] != nil then
+        if ammoAmount[ammoType] != nil then
             -- There is a specified amount that this ammo can get
             ply:GiveAmmo(ammoAmount[ammoType], ammoType, true)
         else
@@ -300,22 +316,11 @@ function GiveAmmo(ply, classname, count)
         gaveAlready[ammoType] = true
     end
 
-    --[[
-    ply:GiveAmmo( "90", "StriderMinigun", true )
-    ply:GiveAmmo( "90", "HelicopterGun", true)
-    ply:GiveAmmo( "90", "SniperRound", true)
-    ply:GiveAmmo( "90", "CombineCannon", true)
-    ply:GiveAmmo( "90", "9mmRound", true)
-    ply:GiveAmmo( "90", "AlyxGun", true)
-    ply:GiveAmmo( "90", "Buckshot", false)
-    ply:GiveAmmo( "90", "SniperPenetratedRound", false)
-    ply:GiveAmmo( "90", "357", true)
-    --surface.PlaySound( "items/9mmclip1.wav" )
-    ]]--
     ply:EmitSound("items/9mmclip1.wav")
 end
 
 -- Find a weapon with the given classname in the player's inv
+--[[
 function FindPlayerWep(ply, classname)
     if !ply:IsValid() then return false end
 
@@ -325,3 +330,4 @@ function FindPlayerWep(ply, classname)
 
     return false
 end
+]]--

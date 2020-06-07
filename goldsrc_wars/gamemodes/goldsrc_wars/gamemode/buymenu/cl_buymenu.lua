@@ -143,9 +143,33 @@ function BuyWeapon(classname)
     net.SendToServer()
 end
 
+-- Switch to a specific weapon
+function SwitchWeapon(classname)
+    local wep = LocalPlayer():GetWeapon(classname)
+    
+    if wep:IsValid() then input.SelectWeapon( wep ) end
+end
+
 net.Receive( "successWeaponPurchase", function(len, ply)
     buyamount = buyamount + 1
+
+    local classname = net.ReadString()
+
+    -- Switch to the weapon
+    timer.Simple(.05, function()
+        SwitchWeapon(classname)
+    end)
+
     BuyMenu_OpenAppropriate(true)
+end)
+
+net.Receive( "successSpecWeaponPurchase", function(len, ply)
+    local classname = net.ReadString()
+
+    -- Switch to the weapon
+    timer.Simple(.05, function()
+        SwitchWeapon(classname)
+    end)
 end)
 
 net.Receive( "failedPurchase", function(len, ply)
