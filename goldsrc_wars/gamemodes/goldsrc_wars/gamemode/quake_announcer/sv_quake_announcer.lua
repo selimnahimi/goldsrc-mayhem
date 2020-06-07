@@ -60,9 +60,7 @@ hook.Add("PlayerDeath", "Quake_PlayerDeath", function(victim, weapon, killer)
         msgID = QUAKE_GODLIKE
         Quake_KillStreakBroadcast(killer, msgID)
     end
-
-    killer:PrintMessage(HUD_PRINTTALK, kStreak)
-
+    
     -- Delay a little, because it could be multiple
     -- players at once, like an explosion
     timer.Create(timerID2, 0.1, 1, function()
