@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/entities/item_longjump"
+	"$nolod" 1
+	"$translucent" 1
+}

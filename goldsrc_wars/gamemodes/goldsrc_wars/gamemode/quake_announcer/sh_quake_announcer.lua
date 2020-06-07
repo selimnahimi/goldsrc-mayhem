@@ -1,0 +1,32 @@
+QUAKE_PATH = "quake/standard/"
+QUAKE_HEADSHOT = 1
+QUAKE_DOUBLEKILL = 2
+QUAKE_TRIPLEKILL = 3
+QUAKE_MULTIKILL = 4
+QUAKE_MEGAKILL = 5
+QUAKE_ULTRAKILL = 6
+QUAKE_MONSTERKILL = 7
+QUAKE_LUDICROUSKILL = 8
+QUAKE_HOLYSHIT = 9
+QUAKE_KILLINGSPREE = 10
+QUAKE_RAMPAGE = 11
+QUAKE_DOMINATING = 12
+QUAKE_UNSTOPPABLE = 13
+QUAKE_GODLIKE = 14
+
+QUAKE_SOUNDS = {
+    [1] = {"headshot.mp3", "HEADSHOT"},
+    [2] = {"doublekill.mp3", "DOUBLE KILL"},
+    [3] = {"triplekill.mp3", "TRIPLE KILL"},
+    [4] = {"multikill.mp3", "MULTI KILL"},
+    [5] = {"megakill.mp3", "MEGA KILL"},
+    [6] = {"ultrakill.mp3", "ULTRA KILL"},
+    [7] = {"monsterkill.mp3", "MONSTER KILL"},
+    [8] = {"ludicrouskill.mp3", "LUDICROUS KILL"},
+    [9] = {"holyshit.mp3", "HOLY SHIT"},
+    [10] = {"killingspree.mp3", "KILLING SPREE"},
+    [11] = {"rampage.mp3", "RAMPAGE"},
+    [12] = {"dominating.mp3", "DOMINATING"},
+    [13] = {"unstoppable.mp3", "UNSTOPPABLE"},
+    [14] = {"godlike.mp3", "GODLIKE"}
+}

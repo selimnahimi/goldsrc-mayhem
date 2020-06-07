@@ -1,0 +1,11 @@
+{
+	"title"		:	"GoldSource Wars",
+	"type"		:	"gamemode",
+	"tags"		:	[ "fun" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
