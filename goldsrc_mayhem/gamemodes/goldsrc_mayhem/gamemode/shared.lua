@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-GM.Name 		= "GoldSrc Wars"
+GM.Name 		= "GoldSrc Mayhem"
 GM.Author 		= "HUNcamper"
 GM.Email 		= ""
 GM.Website 		= ""

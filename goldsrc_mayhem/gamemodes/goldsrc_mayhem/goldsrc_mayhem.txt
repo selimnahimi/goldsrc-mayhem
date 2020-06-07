@@ -1,0 +1,6 @@
+"goldsrc_mayhem"
+{
+	"title"		"GoldSrc Mayhem"
+	"base"		"base"
+	"menusystem"	"1"
+}

@@ -1,6 +1,0 @@
-"goldsrc_wars"
-{
-	"title"		"GoldSrc Wars"
-	"base"		"base"
-	"menusystem"	"1"
-}
