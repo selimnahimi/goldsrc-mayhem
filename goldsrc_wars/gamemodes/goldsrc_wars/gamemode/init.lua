@@ -35,29 +35,53 @@ function GM:PlayerSelectSpawn( ply )
     if ply:Team() == TEAM_CS then classname = "info_player_terrorist"
     elseif ply:Team() == TEAM_HL then classname = "info_player_counterterrorist" end
 
-    -- TODO: Code for checking if the player will potentially get stuck or not
-    --[[local pos = Entity(1):GetPos() -- Choose your position.
-
-    local tr = {
-        start = pos,
-        endpos = pos,
-        mins = Vector( -16, -16, 0 ),
-        maxs = Vector( 16, 16, 71 )
-    }
-
-    local hullTrace = util.TraceHull( tr )
-    if ( hullTrace.Hit ) then
-        -- Find a new spawnpoint
-    end]]--
-
     local spawns = ents.FindByClass( classname )
     if #spawns == 0 then
         spawns = ents.FindByClass( "info_player_start" )
     end
 
-    local random_entry = math.random( #spawns )
-    
-    return spawns[ random_entry ]
+    local spawnPoint = nil
+    local random_entry = 0
+    local new_spawns = table.Copy(spawns)
+
+    -- Make sure player can spawn without getting stuck
+    repeat
+        random_entry = math.random( #new_spawns )
+        local pos = new_spawns[random_entry]:GetPos() -- Choose your position.
+
+        local tr = {
+            start = pos,
+            endpos = pos,
+            mins = Vector( -16, -16, 0 ),
+            maxs = Vector( 16, 16, 71 ),
+            filter = function(ent)
+                if ent:IsPlayer() then
+                    if ent:Team() == ply:Team() then return false end -- ignore same team
+                end
+                return true
+            end
+        }
+
+        local hullTrace = util.TraceHull( tr )
+        if ( !hullTrace.Hit ) then
+            spawnPoint = new_spawns[random_entry]
+            break
+        end
+
+        -- Remove from list so we don't make an infinite loop...
+        table.remove(new_spawns,random_entry)
+
+        if #new_spawns == 0 then
+            break
+        end
+
+    until spawnPoint != nil
+
+    if spawnPoint == nil then
+        spawnPoint = spawns[math.random(#spawns)]
+    end
+        
+    return spawnPoint
 	
 end
 
