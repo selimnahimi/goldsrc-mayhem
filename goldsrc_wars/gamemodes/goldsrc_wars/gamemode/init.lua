@@ -197,13 +197,20 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
     end
 end
 
--- Spawn protection
+-- Spawn protection and team damage
 function GM:PlayerShouldTakeDamage(victim, inflictor)
     local spawnProtected = playerSpawnProtected[ply] or 0
     if spawnProtected > 0 then
-        dmginfo:ScaleDamage(0)
-        return true
+        return false
     end
+
+    if victim:Team() == inflictor:Team() and victim != inflictor then
+        if GetConVarNumber( "mp_friendlyfire" ) == 0 then
+            return false
+        end
+    end
+
+    return true
 end
 
 function ReplaceEntities()
